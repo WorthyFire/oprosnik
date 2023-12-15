@@ -1,4 +1,4 @@
-# Реалиазция проекта для Дизайн-студии Design pro <br>
+# Реалиазция проекта для Микро блога <br>
 1. Клонируйте репозиторий: <br>
 git clone https://github.com/WorthyFire/pythonProject4.git <br>
 2. Перейдите в директорию проекта: <br>
