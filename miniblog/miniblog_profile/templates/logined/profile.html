@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.username }} - Профиль</title>
+</head>
+<body>
+    <h2>Профиль пользователя {{ user.username }}</h2>
+    <p>Имя: {{ user.userprofile.name }}</p>
+    <p>Информация: {{ user.userprofile.bio }}</p>
+    {% if user.userprofile.avatar %}
+        <img src="{{ user.userprofile.avatar.url }}" alt="Ваш аватар" style="max-width: 150px; max-height: 150px;">
+    {% else %}
+        <p>Аватар не загружен</p>
+    {% endif %}
+    <br>
+    <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
+    <h3>Добавить пост:</h3>
+    <form method="post" action="{% url 'profile' %}">
+        {% csrf_token %}
+        {{ post_form.as_p }}
+        <input type="submit" value="Добавить пост">
+    </form>
+    <h3>Посты:</h3>
+    <ul>
+        {% for post in posts %}
+            <li>
+                {{ post.content }} - {{ post.created_at }}
+                <form method="post" action="{% url 'delete_post' post.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="Удалить пост">
+                </form>
+                <ul>
+                    {% for comment in post.comment_set.all %}
+                        <li>
+                            {{ comment.user_profile.user.username }}: {{ comment.content }} - {{ comment.created_at }}
+                            {% if comment.user_profile.user == user %}
+                                <form method="post" action="{% url 'edit_comment' comment.id %}">
+                                    {% csrf_token %}
+                                    {{ comment_form.as_p }}
+                                    <input type="submit" value="Редактировать комментарий">
+                                </form>
+                                <form method="post" action="{% url 'delete_comment' comment.id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="Удалить комментарий">
+                                </form>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if post.user_profile.user != user %}
+                    <br>
+                    <form method="post" action="{% url 'add_comment' post.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <input type="submit" value="Добавить комментарий">
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <h3>Найти пользователя:</h3>
+<form method="get" action="{% url 'profile' %}">
+    {{ user_search_form.as_p }}
+    <input type="submit" value="Найти">
+</form>
+    <br>
+    <a href="{% url 'index' %}">На главную</a>
+    <br>
+    <a href="{% url 'logout' %}">Выйти</a>
+</body>
+</html>

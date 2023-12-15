@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Микро блог</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <h1>Добро пожаловать на главную страницу микро блога</h1>
+        <a href="{% url 'profile' %}">Профиль пользователя</a>
+        <br>
+        <a href="{% url 'logout' %}">Выйти</a>
+    {% else %}
+        <h1>Добро пожаловать на главную страницу микро блога</h1>
+        <div>
+            <a href="{% url 'login' %}">Авторизоваться</a>
+            <br>
+            <a href="{% url 'register' %}">Зарегистрироваться</a>
+        </div>
+    {% endif %}
+</body>
+</html>

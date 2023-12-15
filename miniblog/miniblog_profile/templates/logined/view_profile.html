@@ -1,0 +1,36 @@
+{% block content %}
+  <title>Профиль пользователя</title>
+  <h2>Профиль пользователя {{ user_profile.user.username }}</h2>
+
+  <p>Имя: {{ user_profile.user.userprofile.name }}</p>
+  <p>Информация: {{ user_profile.bio }}</p>
+  <img src="{{ user_profile.avatar.url }}" alt="Аватар пользователя" style="max-width: 150px; max-height: 150px;">
+
+  <h3>Посты пользователя:</h3>
+  <ul>
+    {% for post in posts %}
+      <li>
+        {{ post.content }} - {{ post.created_at }}
+
+          {% if current_user != post.user_profile.user %}
+        <form method="post" action="{% url 'add_comment' post.id %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <textarea name="content" placeholder="Добавить комментарий"></textarea>
+          <input type="file" name="photo" accept="image/*">
+            <input type="submit" value="Добавить комментарий">
+          {% endif %}
+        </form>
+        <ul>
+          {% for comment in post.comment_set.all %}
+            <li>{{ comment.user_profile.user.username }}: {{ comment.content }} - {{ comment.created_at }}</li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+    <a href="{% url 'profile' %}">Вернуться в профиль</a>
+    <br>
+    <a href="{% url 'index' %}">На главную</a>
+    <br>
+    <a href="{% url 'logout' %}">Выйти</a>
+{% endblock %}
