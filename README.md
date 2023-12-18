@@ -12,7 +12,7 @@ cd miniblog <br>
 python manage.py runserver <br>
 
 Вход в панель администратора осуществлять по адресу: <br>
-    http://localhost:8080/admin/ <br>
+    http://localhost:8080/superadmin/ <br>
     Логин: admin <br>
     Пароль: admin
 
