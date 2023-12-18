@@ -1,0 +1,37 @@
+
+<h2>{{ poll.question }}</h2>
+
+<p>Полное описание опроса:</p>
+<p>{{ poll.full_description }}</p>
+{% if poll.poll_avatar %}
+    <img src="{{ poll.poll_avatar.url }}" alt="Аватар опроса" style="max-width: 150px; max-height: 150px;">
+{% else %}
+    <p>Этот опрос не имеет аватара.</p>
+{% endif %}
+
+<form method="post" action="{% url 'vote' poll_id=poll.id %}">
+    {% csrf_token %}
+    {% for choice in poll.choice_set.all %}
+        <input type="radio" name="choice" value="{{ choice.id }}"> {{ choice.choice_text }}<br>
+    {% endfor %}
+    <button type="submit">Проголосовать</button>
+</form>
+
+<h3>Результаты голосования</h3>
+<ul>
+    {% for choice in poll.choice_set.all %}
+        <li>{{ choice.choice_text }}: {{ choice.votes }} голос(ов) - {{ choice.get_percentage }}%</li>
+    {% endfor %}
+</ul>
+
+<p>Общее количество проголосовавших: {{ total_votes }}</p>
+
+{% if user_can_delete %}
+    <form method="post" action="{% url 'poll_detail' poll_id=poll.id %}">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Вы уверены?')">Удалить опрос</button>
+    </form>
+{% endif %}
+<a href="{% url 'index' %}">На главную</a>
+<br>
+<a href = "{% url 'profile' %}">Вернуться обратно в профиль</a>
