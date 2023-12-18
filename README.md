@@ -1,4 +1,4 @@
-# Реалиазция проекта для Микро блога <br>
+# Реалиазция проекта для Опросника <br>
 1. Клонируйте репозиторий: <br>
 git clone https://github.com/WorthyFire/pythonProject4.git <br>
 2. Перейдите в директорию проекта: <br>
@@ -12,7 +12,7 @@ cd miniblog <br>
 python manage.py runserver <br>
 
 Вход в панель администратора осуществлять по адресу: <br>
-    http://localhost:8080/admin/ <br>
+    http://localhost:8080/superadmin/ <br>
     Логин: admin <br>
     Пароль: admin
 
