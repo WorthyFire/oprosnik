@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
-from .models import UserProfile, Comment, Post
+from .models import UserProfile, Poll
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -35,22 +38,19 @@ class UserProfileForm(forms.ModelForm):
                     raise ValidationError(('Размер файла должен быть не более 2 МБ.'))
             return avatar
 
-class PostForm(forms.ModelForm):
+class PollForm(forms.ModelForm):
+    question = forms.CharField(max_length=255, label='Вопрос')
+    choices = forms.CharField(
+        max_length=500,
+        widget=forms.Textarea(attrs={'placeholder': 'Введите варианты ответов, разделенные запятой'}),
+        required=True,
+        label='Варианты ответов',
+    )
+    poll_avatar = forms.ImageField(required=False, label='Изображение опроса')
+    full_description = forms.CharField(widget=forms.Textarea, required=True, label='Полное описание')
+    short_description = forms.CharField(max_length=30, required=True, label='Краткое описание')
+    voting_duration = forms.DurationField(label='Время жизни голосования (в днях)', initial=timedelta(days=7))
+
     class Meta:
-        model = Post
-        fields = ['content']
-        labels = {
-        'content': 'Что у вас нового?:'
-        }
-
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['content', 'photo']
-        labels = {
-            'content': 'Комментарий:'
-        }
-
-class UserSearchForm(forms.Form):
-    username = forms.CharField(label='Никнейм пользователя:', max_length=150, required=False)
-
+        model = Poll
+        fields = ['question', 'choices', 'poll_avatar', 'full_description', 'short_description', 'voting_duration']

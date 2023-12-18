@@ -7,7 +7,7 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <h1>Добро пожаловать на главную страницу микро блога</h1>
+        <h1>Добро пожаловать на главную страницу сайта с опросами</h1>
         <a href="{% url 'profile' %}">Профиль пользователя</a>
         <br>
         <a href="{% url 'logout' %}">Выйти</a>
@@ -19,5 +19,18 @@
             <a href="{% url 'register' %}">Зарегистрироваться</a>
         </div>
     {% endif %}
+
+<h2>Все опросы</h2>
+<ul>
+    {% for poll in all_polls %}
+        <li>{{ poll.question }}:
+            <br>
+            Краткое описание опроса:{{ poll.short_description }}
+            <br>
+            {{ poll_info.short_description }}
+            <a href="{% url 'poll_detail' poll_id=poll.id %}">Подробнее</a>
+        </li>
+    {% endfor %}
+</ul>
 </body>
 </html>

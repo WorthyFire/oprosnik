@@ -16,55 +16,26 @@
     {% endif %}
     <br>
     <a href="{% url 'edit_profile' %}">Редактировать профиль</a>
-    <h3>Добавить пост:</h3>
-    <form method="post" action="{% url 'profile' %}">
-        {% csrf_token %}
-        {{ post_form.as_p }}
-        <input type="submit" value="Добавить пост">
-    </form>
-    <h3>Посты:</h3>
-    <ul>
-        {% for post in posts %}
-            <li>
-                {{ post.content }} - {{ post.created_at }}
-                <form method="post" action="{% url 'delete_post' post.id %}">
-                    {% csrf_token %}
-                    <input type="submit" value="Удалить пост">
-                </form>
-                <ul>
-                    {% for comment in post.comment_set.all %}
-                        <li>
-                            {{ comment.user_profile.user.username }}: {{ comment.content }} - {{ comment.created_at }}
-                            {% if comment.user_profile.user == user %}
-                                <form method="post" action="{% url 'edit_comment' comment.id %}">
-                                    {% csrf_token %}
-                                    {{ comment_form.as_p }}
-                                    <input type="submit" value="Редактировать комментарий">
-                                </form>
-                                <form method="post" action="{% url 'delete_comment' comment.id %}">
-                                    {% csrf_token %}
-                                    <input type="submit" value="Удалить комментарий">
-                                </form>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-                {% if post.user_profile.user != user %}
-                    <br>
-                    <form method="post" action="{% url 'add_comment' post.id %}" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ comment_form.as_p }}
-                        <input type="submit" value="Добавить комментарий">
-                    </form>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    <h3>Найти пользователя:</h3>
-<form method="get" action="{% url 'profile' %}">
-    {{ user_search_form.as_p }}
-    <input type="submit" value="Найти">
+
+
+   <h3>Создать новый опрос</h3>
+<form method="post" enctype="multipart/form-data" action="{% url 'profile' %}">
+    {% csrf_token %}
+    {{ poll_form.as_p }}
+    <button type="submit">Создать опрос</button>
 </form>
+
+
+
+<h3>Ваши опросы</h3>
+<ul>
+    {% for user_poll in user_polls %}
+
+            {{ poll_info.short_description }}
+        <li>{{ user_poll.question }}:
+            <a href="{% url 'poll_detail' poll_id=user_poll.id %}">Подробнее</a></li>
+    {% endfor %}
+</ul>
     <br>
     <a href="{% url 'index' %}">На главную</a>
     <br>
