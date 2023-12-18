@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Микро блог</title>
+    <title>Главная страница сайта с опросами</title>
 </head>
 <body>
     {% if user.is_authenticated %}
@@ -12,7 +12,7 @@
         <br>
         <a href="{% url 'logout' %}">Выйти</a>
     {% else %}
-        <h1>Добро пожаловать на главную страницу микро блога</h1>
+        <h1>Добро пожаловать на главную страницу сайта с опросами</h1>
         <div>
             <a href="{% url 'login' %}">Авторизоваться</a>
             <br>
