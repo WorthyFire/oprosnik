@@ -1,6 +1,6 @@
 # Реалиазция проекта для Опросника <br>
 1. Клонируйте репозиторий: <br>
-git clone https://github.com/WorthyFire/pythonProject4.git <br>
+git clone https://github.com/WorthyFire/oprosnik.git <br>
 2. Перейдите в директорию проекта: <br>
 cd miniblog <br>
 3. Установите пакеты: <br>
